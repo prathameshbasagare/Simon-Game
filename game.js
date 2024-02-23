@@ -24,18 +24,31 @@ function nextSequence(){
 function checkAnswer(){
     if(userClickedPattern[userClickedPattern.length-1]===gamePattern[userClickedPattern.length-1]){
         if(userClickedPattern.length === gamePattern.length ){
-            nextSequence();
+            setTimeout(function(){
+                nextSequence();
+            },1000);
+            
         }
     }
         else{
-            playSound("wrong");
-            level =0;
-            gamePattern=[];
-            userClickedPattern=[];
-            started = false;
-            $("#level-title").text("Press A Key to Start");
+           gameOver();
         }
     
+}
+function gameOver(){
+    playSound("wrong");
+    $("body").addClass("game-over");
+    setTimeout(function(){
+        $("body").removeClass("game-over");
+    },200);
+    startOver();
+    $("#level-title").text("Game Over.Press A Key from KeyBoard to Start");
+}
+function startOver(){
+    level =0;
+    gamePattern=[];
+    userClickedPattern=[];
+    started = false;
 }
 function playSound(name){
     var audio = new Audio("sounds/" + name + ".mp3");
@@ -57,6 +70,6 @@ $(".btn").click(function(){
         console.log(gamePattern);
         console.log(userClickedPattern);
     }else{
-        playSound("wrong");
+        gameOver();
     }
 })
